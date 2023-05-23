@@ -7,7 +7,7 @@
     <title>Sign Up</title>
 </head>
 <body>
-    <form onsubmit="registerUser(event)" id="listOfUser">
+    <form onsubmit="registerUser(event)" id="listOfUser" action="http://127.0.0.1:5500/login.html">
         <label for="name">Name :</label><br>
         <input type="text" id="name" name="name" required><br>
         <label for="email">Email :</label><br>
@@ -18,9 +18,10 @@
         <br>
         <button type = "submit">Sign Up</button>
         <br>
+        <a href="http://127.0.0.1:5500/login.html" class="link">already have an account ? log in here</a>
         <br>
       </form>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.2/axios.min.js"></script>
-      <script src="signup.js"></script>
+      <script src="index.js"></script>
 </body>
 </html>

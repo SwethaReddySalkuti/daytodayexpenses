@@ -27,6 +27,17 @@ exports.addUser =  async(req, res, next) => {
         res.status(500).json({error: err})
     }
 }
+exports.getUsers = async(req,res,next) => 
+{
+    try
+    {
+       const user = await User.findAll();
+       res.status(200).json({allUsers : user});
+    }catch(error){
+        console.log('GET user is failing', JSON.stringify(error));
+        res.status(500).json({error: error});
+    }
+}
 
 
 

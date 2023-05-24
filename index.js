@@ -23,10 +23,15 @@ window.addEventListener("DOMContentLoaded", () => {
           password
       }
       console.log(obj);
-      const Response = await axios.post("http://localhost:3000/user/add-user", obj)
-        if(Response)
+
+      const response = await axios.post("http://localhost:3000/user/add-user", obj)
+        if(response.status === 201)
         {
-          console.log(Response);
+            window.location.href = "./login.html" // change the page on successful login
+        } 
+        else 
+        {
+            throw new Error('Failed to login')
         }
       }
         catch(err)
@@ -45,19 +50,17 @@ window.addEventListener("DOMContentLoaded", () => {
       event.preventDefault();
       const email = event.target.email.value;
       const password = event.target.password.value;
+      const obj = {
+        email,
+        password
+      }
      
-        const Response = await axios.get("http://localhost:3000/user/get-users")
-       
-         for(var i = 0; i < Response.data.allUsers.length; i++){
-           if(Response.data.allUsers[i].email === email && Response.data.allUsers[i].password === password)
-           {
-            console.log("Login Success Full");
-           }
-           else
-           {
-            console.log("Not Success Full");
-           }
-         }  
+        const Response = await axios.post("http://localhost:3000/user/get-users",obj);
+        
+        if(Response)
+        {
+          document.body.innerHTML = document.body.innerHTML + `<h4>Login Success</h4>`;
+        }
     
     }
     catch(err)

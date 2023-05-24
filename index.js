@@ -27,6 +27,7 @@ window.addEventListener("DOMContentLoaded", () => {
       const response = await axios.post("http://localhost:3000/user/add-user", obj)
         if(response.status === 201)
         {
+          
             window.location.href = "./login.html" // change the page on successful login
         } 
         else 
@@ -59,7 +60,8 @@ window.addEventListener("DOMContentLoaded", () => {
         
         if(Response)
         {
-          document.body.innerHTML = document.body.innerHTML + `<h4>Login Success</h4>`;
+          document.body.innerHTML = document.body.innerHTML + `<h4>${Response.data.message}</h4>`;
+          window.location.href = "./expense.html"
         }
     
     }

@@ -5,21 +5,25 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
 exports.addUser =  async(req, res, next) => {
-    try{
+    try
+    {
         const { name, email, password } = req.body;
         console.log('email', email)
-        if(isstringinvalid(name) || isstringinvalid(email || isstringinvalid(password))){
-            return res.status(400).json({err: "Bad parameters . Something is missing"})
-        }
         const saltrounds = 10;
-        bcrypt.hash(password, saltrounds, async (err, hash) => {
-            console.log(email);
-            await User.create({ name, email, password: hash })
+        bcrypt.hash(password,saltrounds,async (err,hash) => {
+            if(err)
+            {
+                console.log(err);
+            }
+            await User.create({ name, email, password:hash})
             res.status(201).json({message: 'Successfuly create new user'})
         })
-        }catch(err) {
-                res.status(500).json(err);
-            }  
+        
+    }
+    catch(err) 
+    {
+        res.status(500).json(err);
+    }  
 }
 exports.getUsers = async(req,res,next) => 
 {

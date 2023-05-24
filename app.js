@@ -12,9 +12,10 @@ app.use(express.json());
 const sequelize = require('./util/database');
 const userRoutes = require('./routes/user');
 
+const expenseRoutes = require('./routes/expense');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/user', userRoutes);
-
+app.use('/expense',expenseRoutes);
 sequelize.sync()
   .then(result => {
     app.listen(3000);

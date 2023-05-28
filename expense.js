@@ -1,6 +1,7 @@
 window.addEventListener("DOMContentLoaded", async () => {
     try{
-    const Response = await axios.get("http://localhost:3000/expense/get-expenses")
+      const token = localStorage.getItem('token');
+    const Response = await axios.get('http://localhost:3000/expense/get-expenses',{headers : {"Authorization" : token}})
    
      for(var i = 0; i < Response.data.allExpenses.length; i++){
        showExpenseOnScreen(Response.data.allExpenses[i]);
@@ -27,9 +28,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     deleteButton.onclick = async () => 
     {
        console.log(obj.id);
-        const response = await axios.delete(`http://localhost:3000/expense/delete-expense/${obj.id}`);
+       const token = localStorage.getItem('token');
+        const response = await axios.delete(`http://localhost:3000/expense/delete-expense/${obj.id}`,  { headers: {"Authorization" : token} })
          if(response){
-            parentElem.removeChild(childElem);
+          window.location.reload();
          }
   
     }
@@ -39,8 +41,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     editButton.value = 'Edit';
     editButton.onclick = async () => 
     {
-       
-       const Response = await axios.delete(`http://localhost:3000/expense/delete-expense/${obj.id}`)
+      const token = localStorage.getItem('token');
+      const Response = await axios.delete(`http://localhost:3000/expense/delete-expense/${obj.id}`,  { headers: {"Authorization" : token} })
          if(Response)
          {
             parentElem.removeChild(childElem);
@@ -72,7 +74,9 @@ window.addEventListener("DOMContentLoaded", async () => {
           category
       }
       console.log(obj);
-      const Response= await axios.post("http://localhost:3000/expense/add-expense", obj)
+      const token = localStorage.getItem('token');
+      const Response= await axios.post('http://localhost:3000/expense/add-expense',obj, { headers: {"Authorization" : token} })
+
         
       window.location.reload();
     }

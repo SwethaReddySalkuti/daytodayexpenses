@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", () => {
- 
+  
   
   })
   
@@ -57,7 +57,8 @@ window.addEventListener("DOMContentLoaded", () => {
       }
      
         const Response = await axios.post("http://localhost:3000/user/get-users",obj);
-        
+        alert(Response.data.message);
+        localStorage.setItem('token',Response.data.token);
         if(Response)
         {
           document.body.innerHTML = document.body.innerHTML + `<h4>${Response.data.message}</h4>`;

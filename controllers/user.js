@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-//const User = require('../models/User')
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 exports.addUser =  async(req, res, next) => {
@@ -44,7 +44,7 @@ exports.getUsers = async(req,res,next) =>
                 if(response === true)
                 {
                     console.log("Passssssss");
-                    res.status(200).json({success: true,message: "User logged in Successfully"});
+                    res.status(200).json({success: true,message: "User logged in Successfully",token: generateAccessToken(user[0].id,user[0].name)});
                 }
                 else
                 {
@@ -64,6 +64,9 @@ exports.getUsers = async(req,res,next) =>
         res.status(500).json({error: error});
     }
 }
-
+function generateAccessToken(id,name)
+{
+    return jwt.sign({userId : id , name : name} ,'98rhhu28938');
+}
 
 

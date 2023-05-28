@@ -11,12 +11,15 @@ const addExpense =  async(req, res, next) => {
         const category = req.body.category;
        
        const data = await Expense.create({
-           amount:amount,
-           description:description,
-           category:category
+            amount,
+            description,
+            category,
+            userId: req.user.id
        })
-       res.status(201).json({newExpenseDetail : data});
+       if(data){
+       return res.status(201).json({newExpenseDetail : data});
     }
+}
     catch(err){
         console.log(err);
         res.status(500).json({error: err})
@@ -26,8 +29,8 @@ const addExpense =  async(req, res, next) => {
 const getExpense = async(req, res, next) => {
     try
     {
-       const expense = await Expense.findAll();
-       res.status(200).json({allExpenses : expense});
+       const expense = await Expense.findAll({where:{userId : req.user.id}});
+       return res.status(200).json({allExpenses : expense});
     }catch(error){
         console.log('GET expense is failing', JSON.stringify(error));
         res.status(500).json({error: error});
@@ -43,7 +46,7 @@ const deleteExpense = async(req, res) => {
 
        const uId = req.params.id;
        await Expense.destroy({where: {id : uId}});
-       res.sendStatus(200);
+       return res.status(200).json({success:true,message:"Deleted Successfully"});
     }catch(error){
         console.log(error);
         res.status(500).json(error);

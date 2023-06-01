@@ -88,3 +88,27 @@ window.addEventListener("DOMContentLoaded", async () => {
       
       
   }
+  document.getElementById('rzp-button1').onclick = async function (e)
+  {
+    const token = localStorage.getItem(token);
+    const response = await axios.get('http://localhost:3000/purchase/premiummembership',{ headers: {"Authorization" : token} })
+    var options = {
+      "key" : response.data.key_id, //key Id generated from dash board
+      "order_id" : response.data.order_id,   // for one time payment
+      "handler" : async function (response) {   // handles success payment 
+        await axios.post('http://localhost:3000/purchase/updatetransactionstatus',{
+          order_id : options.order_id,
+          payment_id : response.razorpay_payment_id
+        },{headers :{"Authorization" : token}})
+        alert('You are a Premium User Now')
+      }
+    }
+    const rzp1 = new Razorpay(options);
+    rzp1.open();
+    e.preventDefault();
+
+    rzp1.on('payment.failed',function(response){
+      console.log(response);
+      alert('Something went wrong')
+    })
+  }

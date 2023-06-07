@@ -44,7 +44,7 @@ exports.getUsers = async(req,res,next) =>
                 if(response === true)
                 {
                     console.log("Passssssss");
-                    res.status(200).json({success: true,message: "User logged in Successfully",token: generateAccessToken(user[0].id,user[0].name)});
+                    res.status(200).json({success: true,message: "User logged in Successfully",token: generateAccessToken(user[0].id,user[0].name,user[0].ispremiumuser)});
                 }
                 else
                 {
@@ -64,9 +64,9 @@ exports.getUsers = async(req,res,next) =>
         res.status(500).json({error: error});
     }
 }
-function generateAccessToken(id,name)
+function generateAccessToken(id,name,ispremiumuser)
 {
-    return jwt.sign({userId : id , name : name} ,'98rhhu28938');
+    return jwt.sign({userId : id , name : name ,ispremiumuser} ,'98rhhu28938');
 }
 
 

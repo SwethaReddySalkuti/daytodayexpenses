@@ -147,7 +147,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       var leaderboardEle = document.getElementById('leaderboard')
         leaderboardEle.innerHTML += '<h1> Leader Board </<h1>'
         userLeaderBoardArray.data.forEach((userDetails) => {
-            leaderboardEle.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.total_cost || 0} </li>`
+            leaderboardEle.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.totalExpenses || 0} </li>`
         })
     }
     document.getElementById("message").appendChild(inputElement);

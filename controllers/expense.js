@@ -1,12 +1,15 @@
 const express = require('express');
-const router = express.Router();
-
 const Expense = require('../models/Expense');
 const User = require('../models/User');
+const sequelize = require('../util/database');
 
 const addExpense =  async(req, res, next) => {
-    try{
-         
+    
+    const t = await sequelize.transaction() //transaction obj //returns promise   //use transactions during post requests
+                                            // t out of try bcz -> to use in catch block
+    try
+    {
+       
         const amount = req.body.amount;
         const description = req.body.description;
         const category = req.body.category;
@@ -16,25 +19,27 @@ const addExpense =  async(req, res, next) => {
             description,
             category,
             userId: req.user.id
-       })
-       if(expense)
-       {
-            const totalExpense = Number(req.user.totalExpense) + Number(amount);
-            const upuser = await User.update({
-                totalExpenses : totalExpense
-            },{
-                where : {id:req.user.id}
-            })
-            if(upuser)
+       },{transaction: t})
+       
+        const totalExpense = Number(req.user.totalExpense) + Number(amount);
+        await User.update(
             {
-                return res.status(201).json({newExpenseDetail : expense});
+            totalExpenses : totalExpense
+            },
+            {
+                where : {id:req.user.id},
+                transaction:t
             }
-             
+        )
+        
+        await t.commit();
+        res.status(200).json({newExpenseDetail : expense});
+    
     }
-}
-    catch(err){
-        console.log(err);
-        res.status(500).json({error: err})
+    catch(err)
+    {
+        await t.rollback();
+        return res.status(500).json({error: err})
     }
 }
 

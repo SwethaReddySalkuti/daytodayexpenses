@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Expense = require('../models/Expense');
+const User = require('../models/User');
 
 const addExpense =  async(req, res, next) => {
     try{
@@ -10,14 +11,25 @@ const addExpense =  async(req, res, next) => {
         const description = req.body.description;
         const category = req.body.category;
        
-       const data = await Expense.create({
+       const expense = await Expense.create({
             amount,
             description,
             category,
             userId: req.user.id
        })
-       if(data){
-       return res.status(201).json({newExpenseDetail : data});
+       if(expense)
+       {
+            const totalExpense = Number(req.user.totalExpense) + Number(amount);
+            const upuser = await User.update({
+                totalExpenses : totalExpense
+            },{
+                where : {id:req.user.id}
+            })
+            if(upuser)
+            {
+                return res.status(201).json({newExpenseDetail : expense});
+            }
+             
     }
 }
     catch(err){

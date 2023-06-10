@@ -71,3 +71,6 @@ window.addEventListener("DOMContentLoaded", () => {
       console.log(err);
     }
   }
+  function forgotpassword() {
+    window.location.href = "./password.html"
+}

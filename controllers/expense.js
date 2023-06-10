@@ -55,6 +55,7 @@ const getExpense = async(req, res, next) => {
 }
 
 const deleteExpense = async(req, res) => {
+    const t = sequelize.transaction();
     try{
        if(req.params.id == 'undefined'){
         console.log('ID missing');
@@ -62,10 +63,21 @@ const deleteExpense = async(req, res) => {
        }
 
        const uId = req.params.id;
-       await Expense.destroy({where: {id : uId}});
+       const expense = await Expense.destroy({where: {id : uId}});
+       const totalExpense = Number(req.user.totalExpense) - Number(expense.amount);
+       await User.update(
+        {
+        totalExpenses : totalExpense
+        },
+        {
+            where : {id:expense.userId},
+            transaction:t
+        }
+    )
        return res.status(200).json({success:true,message:"Deleted Successfully"});
     }catch(error){
-        console.log(error);
+       
+        t.rollback();
         res.status(500).json(error);
     }
 }

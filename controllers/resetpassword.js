@@ -1,11 +1,11 @@
-const uuid = require('uuid');
-const sgMail = require('@sendgrid/mail');
+const uuid = require('uuid');      // unique identifier
+const sgMail = require('@sendgrid/mail');        //Sendgrid helps in sending mails
 const bcrypt = require('bcrypt');
 
 const User = require('../models/users');
 const Forgotpassword = require('../models/forgotpassword');
 
-const forgotpassword = async (req, res) => {
+exports.forgotpassword = async (req, res) => {
     try {
         const { email } =  req.body;
         const user = await User.findOne({where : { email }});
@@ -16,11 +16,11 @@ const forgotpassword = async (req, res) => {
                     throw new Error(err)
                 })
 
-            sgMail.setApiKey(process.env.SENGRID_API_KEY)
+            sgMail.setApiKey(process.env.SENGRID_API_KEY) //api_key is generated in sendgrid website
 
             const msg = {
-                to: email, // Change to your recipient
-                from: 'yj.rocks.2411@gmail.com', // Change to your verified sender
+                to: 'b161170@rgukt.ac.in', // Change to your recipient  //if multiple -> array
+                from: 'salkutiswethareddy@gmail.com', // Change to your verified sender // from object has name , mail properties
                 subject: 'Sending with SendGrid is Fun',
                 text: 'and easy to do anywhere, even with Node.js',
                 html: `<a href="http://localhost:3000/password/resetpassword/${id}">Reset password</a>`,
@@ -30,9 +30,8 @@ const forgotpassword = async (req, res) => {
             .send(msg)
             .then((response) => {
 
-                // console.log(response[0].statusCode)
-                // console.log(response[0].headers)
-                return res.status(response[0].statusCode).json({message: 'Link to reset password sent to your mail ', sucess: true})
+                console.log("Mail Sent")
+                return res.status(response[0].statusCode).json({message: 'Link to reset password sent to your mail ', success: true})
 
             })
             .catch((error) => {
@@ -50,7 +49,7 @@ const forgotpassword = async (req, res) => {
 
 }
 
-const resetpassword = (req, res) => {
+exports.resetpassword = (req, res) => {
     const id =  req.params.id;
     Forgotpassword.findOne({ where : { id }}).then(forgotpasswordrequest => {
         if(forgotpasswordrequest){
@@ -76,7 +75,7 @@ const resetpassword = (req, res) => {
     })
 }
 
-const updatepassword = (req, res) => {
+exports.updatepassword = (req, res) => {
 
     try {
         const { newpassword } = req.query;
@@ -116,8 +115,4 @@ const updatepassword = (req, res) => {
 }
 
 
-module.exports = {
-    forgotpassword,
-    updatepassword,
-    resetpassword
-}
+// transactional emails -- reset password

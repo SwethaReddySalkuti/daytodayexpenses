@@ -7,7 +7,7 @@ const Order = require('./models/orders');
 const Forgotpassword = require('./models/forgotpassword');
 
 var cors = require('cors');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv');   // to access environment variables
 
 const app = express();
 

@@ -10,16 +10,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.1.4",
     "express": "^4.18.2",
+    "express-handlebars": "^7.0.7",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.2.0",
     "mysql2": "^3.3.2",
     "nodemon": "^2.0.22",
     "razorpay": "^0.0.0",
-    "sequelize": "^6.31.1"
+    "sequelize": "^6.31.1",
+    "uuid": "^9.0.0"
   }
 }
